@@ -24,6 +24,8 @@ class PostsController < ApplicationController
     the_post.expires_on = params.fetch("query_expires_on")
     the_post.board_id = params.fetch("query_board_id")
 
+    the_post.user_id = current_user.id
+
     if the_post.valid?
       the_post.save
       redirect_to("/boards/#{the_post.board_id}", { :notice => "Post created successfully." })
@@ -55,6 +57,6 @@ class PostsController < ApplicationController
 
     the_post.destroy
 
-    redirect_to("/posts", { :notice => "Post deleted successfully."} )
+    redirect_back(fallback_location: root_path, notice: "Post deleted successfully.")
   end
 end
